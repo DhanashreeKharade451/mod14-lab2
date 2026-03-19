@@ -14,8 +14,19 @@ const noteSchema = new Schema({
   createdAt: {
     type: Date,
     default: Date.now,
-  }
+  },
+
+  //add a field to our note schema to establish it to a user
+
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
+}
+
+
 });
+
 
 const Note = mongoose.model("Note", noteSchema);
 
