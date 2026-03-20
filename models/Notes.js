@@ -19,7 +19,7 @@ const noteSchema = new Schema({
   //add a field to our note schema to establish it to a user
 
   user: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,  //special type grab from mongoose
     ref: 'User',
     required: true,
 }

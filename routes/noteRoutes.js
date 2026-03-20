@@ -15,7 +15,20 @@ router.get('/', async (req, res) => {
   // This currently finds all notes in the database.
   // It should only find notes owned by the logged in user.
   try {
-    const notes = await Note.find({});
+    //find the notes first so we can check which user created it (ownership)
+    const foundNote = await findById(re.params.id)
+
+    if(!foundNote){
+       return res.status(400).json({message: "No note found with this id!"});
+    }
+
+    console.log(foundNote.user, req.user._id)
+//if they dont match its
+    if(foundNote.user.toString() !== req.us._id){
+       return res.status(401).json({message:"This note does not belong to you"})
+    }
+    //this need authorization check
+    const notes = await Note.find({user: req.user._id});
     res.json(notes);
   } catch (err) {
     res.status(500).json(err);
