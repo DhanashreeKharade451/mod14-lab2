@@ -94,6 +94,13 @@ router.delete('/:id', async (req, res) => {
     if (!note) {
       return res.status(404).json({ message: 'No note found with this id!' });
     }
+
+     if (foundNote.user.toString() !== req.user._id.toString()) {
+      return res.status(403).json({
+        message: 'User is not authorized to delete this note.'
+      });
+    }
+    
     res.json({ message: 'Note deleted!' });
   } catch (err) {
     res.status(500).json(err);
