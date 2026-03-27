@@ -12,27 +12,37 @@ router.use(authMiddleware);
 // THIS IS THE ROUTE THAT CURRENTLY HAS THE FLAW
 router.get('/', async (req, res) => {
   console.log(req.user)
-  // This currently finds all notes in the database.
-  // It should only find notes owned by the logged in user.
-  try {
-    //find the notes first so we can check which user created it (ownership)
-    const foundNote = await findById(re.params.id)
 
-    if(!foundNote){
-       return res.status(400).json({message: "No note found with this id!"});
-    }
-
-    console.log(foundNote.user, req.user._id)
-//if they dont match its
-    if(foundNote.user.toString() !== req.us._id){
-       return res.status(401).json({message:"This note does not belong to you"})
-    }
-    //this need authorization check
-    const notes = await Note.find({user: req.user._id});
+try {
+    const notes = await Note.find({ user: req.user._id });
     res.json(notes);
   } catch (err) {
     res.status(500).json(err);
+
   }
+
+
+//   // This currently finds all notes in the database.
+//   // It should only find notes owned by the logged in user.
+//   try {
+//     //find the notes first so we can check which user created it (ownership)
+//     const foundNote = await findById(re.params.id)
+
+//     if(!foundNote){
+//        return res.status(400).json({message: "No note found with this id!"});
+//     }
+
+//     console.log(foundNote.user, req.user._id)
+// //if they dont match its
+//     if(foundNote.user.toString() !== req.us._id){
+//        return res.status(401).json({message:"This note does not belong to you"})
+//     }
+//     //this need authorization check
+//     const notes = await Note.find({user: req.user._id});
+//     res.json(notes);
+//   } catch (err) {
+//     res.status(500).json(err);
+//   }
 });
  
 // POST /api/notes - Create a new note
@@ -53,10 +63,22 @@ router.post('/', async (req, res) => {
 router.put('/:id', async (req, res) => {
   try {
     // This needs an authorization check
-    const note = await Note.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    if (!note) {
+    //const note = await Note.findByIdAndUpdate(req.params.id, req.body, { new: true });
+      const foundNote = await Note.findById(req.params.id)
+    if (!foundNote) {
       return res.status(404).json({ message: 'No note found with this id!' });
     }
+    
+     
+    // compare the note's user id with the logged in user's id 
+    // if they don't match, it's not our note and we shouldn't be able to update it 
+    if (foundNote.user.toString() !== req.user._id) {
+      return res.status(403).json({ message: 'User is not authorized to update this note.' })
+    }
+
+    // This needs an authorization check
+    const note = await Note.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    
     res.json(note);
   } catch (err) {
     res.status(500).json(err);
