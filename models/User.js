@@ -20,7 +20,7 @@ const userSchema = new Schema({
     required: function(){
       //this refers to document that being created
       return !this.githubId
-    }
+    },
   },
 
   githubId: {
