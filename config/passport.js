@@ -7,7 +7,7 @@ passport.use(
         {
             clientID: process.env.GITHUB_CLIENT_ID,
             clientSecret: process.env.GITHUB_CLIENT_SECRET,
-            callbackURL: process.env.GITHUB_CALLBACK_URL            // e.g., 'http://localhost:3000/api/users/auth/github/callback'
+            callbackURL: process.env.GITHUB_CALLBACK_URL            // e.g., 'http://localhost:3001/api/users/auth/github/callback'
         },
 
         async(accessToken, refreshToken, Profiler, done) => {
