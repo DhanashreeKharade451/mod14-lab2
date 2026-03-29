@@ -1,3 +1,5 @@
+//new router file for your Bookmark resources
+
 import express from 'express'
 
 const router = express.Router()
