@@ -84,8 +84,6 @@ router.put('/:id', async (req, res) => {
     res.status(500).json(err);
   }
 });
-
-
 // DELETE /api/notes/:id - Delete a note
 router.delete('/:id', async (req, res) => {
   try {
