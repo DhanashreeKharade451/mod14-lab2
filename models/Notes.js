@@ -15,7 +15,6 @@ const noteSchema = new Schema({
     type: Date,
     default: Date.now,
   },
-
   //add a field to our note schema to establish it to a user
 
   user: {
