@@ -4,6 +4,7 @@ import express from 'express'
 
 import './config/connection.js'
 
+
 import noteRoutes from './routes/noteRoutes.js'
 import userRoutes from './routes/userRoutes.js'
 import cors from 'cors';
